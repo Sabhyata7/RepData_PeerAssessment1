@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 require(ggplot2)
 require(xtable)
 require(dplyr)
-require(rAmCharts)
 library(stringr)
 ```
 
@@ -52,8 +51,7 @@ dt <- my_data %>%
 #### Make a histogram of the total number of steps taken each day
 
 ```{r}
-amHist(dt$steps,col = "lightblue", control_hist = list(breaks = 20),
-       creditsPosition =  "top-right")
+hist(dt$steps,breaks = 30)
 ```
 
   
@@ -76,9 +74,7 @@ avg <- my_data %>%
     group_by(interval) %>% 
     summarise(steps = mean(steps,na.rm = T))
 
-amSerialChart(data = avg, categoryField = 'interval',
-              creditsPosition =  "top-right") %>%
-    addGraph(valueField = 'steps')
+plot(avg$interval, avg$steps, type = 'l')
 ```
 
 #### Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
@@ -131,8 +127,7 @@ new_dt <- my_new_data %>%
     group_by(date) %>% 
     summarise(steps = sum(steps,na.rm = T))
 
-amHist(new_dt$steps,col = "lightblue", control_hist = list(breaks = 20),
-       creditsPosition =  "top-right")
+hist(new_dt$steps,breaks = 30)
 
 new_mean_dt <- mean(dt$steps,na.rm = T)
 new_median_dt <- median(dt$steps,na.rm = T)
@@ -165,6 +160,8 @@ week_plot <- my_new_data %>%
     group_by(week, interval) %>% 
     summarise(steps = sum(steps,na.rm = T))
 
+# par(mfrow = c(2, 1))
+# plot(avg$interval, avg$steps, type = 'l')
 ggplot(week_plot, aes(interval, steps, colour = factor(week))) +
     geom_line() + facet_wrap(~ week, nrow = 2, scales = "free") +
     guides(colour = "none") +
