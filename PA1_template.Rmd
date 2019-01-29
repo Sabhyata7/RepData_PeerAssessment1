@@ -2,7 +2,9 @@
 title: "My First Assignment"
 author: "Sabhyata Azad"
 date: "25 January 2019"
-output: html_document
+output:
+    html_document:
+        keep_md: true
 ---
 
 ```{r setup, include=FALSE}
